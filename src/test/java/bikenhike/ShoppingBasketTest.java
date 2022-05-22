@@ -34,4 +34,22 @@ public class ShoppingBasketTest {
 
         Assertions.assertEquals(expectedResult, ShoppingBasket.of(item1, item2).generateReceiptDetails());
     }
+
+    @Test
+    void thirdShoppingBasketShouldMatchExpectedResult() {
+        final var item1 = new Item("bottle of perfume", "27.99", true, true);
+        final var item2 = new Item("bottle of perfume", "18.99", true, false);
+        final var item3 = new Item("packet of headache pills", "9.75", false, false);
+        final var item4 = new Item("box of chocolates", "11.25", false, true);
+
+        final var expectedResult = """
+                > 1 imported bottle of perfume: 32.19
+                > 1 bottle of perfume: 20.89
+                > 1 packet of headache pills: 9.75
+                > 1 imported box of chocolates: 11.85
+                > Sales Taxes: 6.70
+                > Total: 74.68""";
+
+        Assertions.assertEquals(expectedResult, ShoppingBasket.of(item1, item2, item3, item4).generateReceiptDetails());
+    }
 }

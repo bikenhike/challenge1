@@ -11,10 +11,9 @@ public class ShoppingBasket {
     private static final String RECEIPT_DETAILS_FORMAT = """
             > Sales Taxes: %s
             > Total: %s""";
-    public static final MathContext ROUNDING_MODE = new MathContext(3, RoundingMode.HALF_UP);
-    public static final MathContext ROUNDING_MODE_IMPORT = new MathContext(2, RoundingMode.UP);
     public static final BigDecimal IMPORT_TAX = new BigDecimal("0.05");
     public static final BigDecimal SALES_TAX = new BigDecimal("0.1");
+    public static final BigDecimal ONE_HALF = new BigDecimal("0.5");
 
     private final List<Item> items = new ArrayList<>();
 
@@ -36,7 +35,7 @@ public class ShoppingBasket {
             var grossItemPrice = itemPrice;
 
             if (item.isTaxed()) {
-                var tax = grossItemPrice.multiply(SALES_TAX).round(ROUNDING_MODE);
+                var tax = roundToClosestFiveCents(grossItemPrice.multiply(SALES_TAX));
                 taxes = taxes.add(tax);
                 grossItemPrice = grossItemPrice.add(tax);
                 if (!item.isImported()) {
@@ -45,7 +44,7 @@ public class ShoppingBasket {
             }
 
             if (item.isImported()) {
-                var importTax = itemPrice.multiply(IMPORT_TAX).round(ROUNDING_MODE_IMPORT);
+                var importTax = roundToClosestFiveCents(itemPrice.multiply(IMPORT_TAX));
                 taxes = taxes.add(importTax);
                 grossItemPrice = grossItemPrice.add(importTax);
                 stringBuilder.append(ItemFormatter.generateItemOutputLineImported(item.getName(), grossItemPrice));
@@ -59,5 +58,9 @@ public class ShoppingBasket {
         }
 
         return stringBuilder.append(String.format(RECEIPT_DETAILS_FORMAT, taxes, total)).toString();
+    }
+
+    private static BigDecimal roundToClosestFiveCents(BigDecimal price) {
+        return price.divide(ONE_HALF, 1, RoundingMode.UP).multiply(ONE_HALF);
     }
 }
