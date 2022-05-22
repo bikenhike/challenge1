@@ -7,9 +7,9 @@ public class ShoppingBasketTest {
 
     @Test
     void firstShoppingBasketShouldMatchExpectedResult() {
-        final var item1 = new Item("book", "12.49", false, false);
-        final var item2 = new Item("music CD", "14.99", true, false);
-        final var item3 = new Item("chocolate bar", "0.85", false, false);
+        final var item1 = Item.createDomesticUntaxedItem("book", "12.49");
+        final var item2 = Item.createDomesticTaxedItem("music CD", "14.99");
+        final var item3 = Item.createDomesticUntaxedItem("chocolate bar", "0.85");
 
         final var expectedResult = """
                 > 1 book: 12.49
@@ -23,8 +23,8 @@ public class ShoppingBasketTest {
 
     @Test
     void secondShoppingBasketShouldMatchExpectedResult() {
-        final var item1 = new Item("box of chocolates", "10.00", false, true);
-        final var item2 = new Item("bottle of perfume", "47.50", true, true);
+        final var item1 = Item.createImportedUntaxedItem("box of chocolates", "10.00");
+        final var item2 = Item.createImportedTaxedItem("bottle of perfume", "47.50");
 
         final var expectedResult = """
                 > 1 imported box of chocolates: 10.50
@@ -37,10 +37,10 @@ public class ShoppingBasketTest {
 
     @Test
     void thirdShoppingBasketShouldMatchExpectedResult() {
-        final var item1 = new Item("bottle of perfume", "27.99", true, true);
-        final var item2 = new Item("bottle of perfume", "18.99", true, false);
-        final var item3 = new Item("packet of headache pills", "9.75", false, false);
-        final var item4 = new Item("box of chocolates", "11.25", false, true);
+        final var item1 = Item.createImportedTaxedItem("bottle of perfume", "27.99");
+        final var item2 = Item.createDomesticTaxedItem("bottle of perfume", "18.99");
+        final var item3 = Item.createDomesticUntaxedItem("packet of headache pills", "9.75");
+        final var item4 = Item.createImportedUntaxedItem("box of chocolates", "11.25");
 
         final var expectedResult = """
                 > 1 imported bottle of perfume: 32.19
