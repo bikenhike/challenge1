@@ -20,4 +20,18 @@ public class ShoppingBasketTest {
 
         Assertions.assertEquals(expectedResult, ShoppingBasket.of(item1, item2, item3).generateReceiptDetails());
     }
+
+    @Test
+    void secondShoppingBasketShouldMatchExpectedResult() {
+        final var item1 = new Item("box of chocolates", "10.00", false, true);
+        final var item2 = new Item("bottle of perfume", "47.50", true, true);
+
+        final var expectedResult = """
+                > 1 imported box of chocolates: 10.50
+                > 1 imported bottle of perfume: 54.65
+                > Sales Taxes: 7.65
+                > Total: 65.15""";
+
+        Assertions.assertEquals(expectedResult, ShoppingBasket.of(item1, item2).generateReceiptDetails());
+    }
 }

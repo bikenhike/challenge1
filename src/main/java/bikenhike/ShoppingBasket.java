@@ -12,6 +12,9 @@ public class ShoppingBasket {
             > Sales Taxes: %s
             > Total: %s""";
     public static final MathContext ROUNDING_MODE = new MathContext(3, RoundingMode.HALF_UP);
+    public static final MathContext ROUNDING_MODE_IMPORT = new MathContext(2, RoundingMode.UP);
+    public static final BigDecimal IMPORT_TAX = new BigDecimal("0.05");
+    public static final BigDecimal SALES_TAX = new BigDecimal("0.1");
 
     private final List<Item> items = new ArrayList<>();
 
@@ -29,16 +32,30 @@ public class ShoppingBasket {
         var total = BigDecimal.ZERO;
 
         for (final var item : items) {
-            var grossItemPrice = item.getPrice();
+            final var itemPrice = item.getPrice();
+            var grossItemPrice = itemPrice;
 
             if (item.isTaxed()) {
-                var tax = grossItemPrice.multiply(new BigDecimal("0.1")).round(ROUNDING_MODE);
+                var tax = grossItemPrice.multiply(SALES_TAX).round(ROUNDING_MODE);
                 taxes = taxes.add(tax);
                 grossItemPrice = grossItemPrice.add(tax);
+                if (!item.isImported()) {
+                    stringBuilder.append(ItemFormatter.generateItemOutputLine(item.getName(), grossItemPrice));
+                }
+            }
+
+            if (item.isImported()) {
+                var importTax = itemPrice.multiply(IMPORT_TAX).round(ROUNDING_MODE_IMPORT);
+                taxes = taxes.add(importTax);
+                grossItemPrice = grossItemPrice.add(importTax);
+                stringBuilder.append(ItemFormatter.generateItemOutputLineImported(item.getName(), grossItemPrice));
+            }
+
+            if (!item.isImported() && !item.isTaxed()) {
+                stringBuilder.append(ItemFormatter.generateItemOutputLine(item.getName(), grossItemPrice));
             }
 
             total = total.add(grossItemPrice);
-            stringBuilder.append(ItemFormatter.generateItemOutputLine(item.getName(), grossItemPrice));
         }
 
         return stringBuilder.append(String.format(RECEIPT_DETAILS_FORMAT, taxes, total)).toString();
