@@ -1,4 +1,5 @@
 # challenge1
+My solution of problem 1 (SALES TAXES).
 
 ## Requirements
 * JDK 17
