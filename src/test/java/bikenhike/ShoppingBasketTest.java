@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class ShoppingBasketTest {
 
     @Test
-    void firstShoppingBasketShouldMatchExpectedResult() {
+    void firstShoppingBasketReceiptShouldMatchExpectedResult() {
         final var item1 = Item.createDomesticUntaxedItem("book", "12.49");
         final var item2 = Item.createDomesticTaxedItem("music CD", "14.99");
         final var item3 = Item.createDomesticUntaxedItem("chocolate bar", "0.85");
@@ -18,11 +18,11 @@ public class ShoppingBasketTest {
                 > Sales Taxes: 1.50
                 > Total: 29.83""";
 
-        assertShoppingBasketIsSameAsExpected(expectedResult, item1, item2, item3);
+        assertShoppingBasketReceiptIsSameAsExpected(expectedResult, item1, item2, item3);
     }
 
     @Test
-    void secondShoppingBasketShouldMatchExpectedResult() {
+    void secondShoppingBasketReceiptShouldMatchExpectedResult() {
         final var item1 = Item.createImportedUntaxedItem("box of chocolates", "10.00");
         final var item2 = Item.createImportedTaxedItem("bottle of perfume", "47.50");
 
@@ -32,11 +32,11 @@ public class ShoppingBasketTest {
                 > Sales Taxes: 7.65
                 > Total: 65.15""";
 
-        assertShoppingBasketIsSameAsExpected(expectedResult, item1, item2);
+        assertShoppingBasketReceiptIsSameAsExpected(expectedResult, item1, item2);
     }
 
     @Test
-    void thirdShoppingBasketShouldMatchExpectedResult() {
+    void thirdShoppingBasketReceiptShouldMatchExpectedResult() {
         final var item1 = Item.createImportedTaxedItem("bottle of perfume", "27.99");
         final var item2 = Item.createDomesticTaxedItem("bottle of perfume", "18.99");
         final var item3 = Item.createDomesticUntaxedItem("packet of headache pills", "9.75");
@@ -50,10 +50,10 @@ public class ShoppingBasketTest {
                 > Sales Taxes: 6.70
                 > Total: 74.68""";
 
-        assertShoppingBasketIsSameAsExpected(expectedResult, item1, item2, item3, item4);
+        assertShoppingBasketReceiptIsSameAsExpected(expectedResult, item1, item2, item3, item4);
     }
 
-    private void assertShoppingBasketIsSameAsExpected(final String expectedResult, final Item... items) {
+    private void assertShoppingBasketReceiptIsSameAsExpected(final String expectedResult, final Item... items) {
         Assertions.assertEquals(expectedResult, ShoppingBasket.of(items).generateReceiptDetails());
     }
 }
