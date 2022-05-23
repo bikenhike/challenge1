@@ -18,7 +18,7 @@ public class ShoppingBasketTest {
                 > Sales Taxes: 1.50
                 > Total: 29.83""";
 
-        Assertions.assertEquals(expectedResult, ShoppingBasket.of(item1, item2, item3).generateReceiptDetails());
+        assertShoppingBasketIsSameAsExpected(expectedResult, item1, item2, item3);
     }
 
     @Test
@@ -32,7 +32,7 @@ public class ShoppingBasketTest {
                 > Sales Taxes: 7.65
                 > Total: 65.15""";
 
-        Assertions.assertEquals(expectedResult, ShoppingBasket.of(item1, item2).generateReceiptDetails());
+        assertShoppingBasketIsSameAsExpected(expectedResult, item1, item2);
     }
 
     @Test
@@ -50,6 +50,10 @@ public class ShoppingBasketTest {
                 > Sales Taxes: 6.70
                 > Total: 74.68""";
 
-        Assertions.assertEquals(expectedResult, ShoppingBasket.of(item1, item2, item3, item4).generateReceiptDetails());
+        assertShoppingBasketIsSameAsExpected(expectedResult, item1, item2, item3, item4);
+    }
+
+    private void assertShoppingBasketIsSameAsExpected(final String expectedResult, final Item... items) {
+        Assertions.assertEquals(expectedResult, ShoppingBasket.of(items).generateReceiptDetails());
     }
 }
