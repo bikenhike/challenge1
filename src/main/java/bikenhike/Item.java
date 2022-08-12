@@ -42,9 +42,9 @@ public class Item {
 
     public String generateItemReceiptLine() {
         if (isImported) {
-            return String.format(ITEM_LINE_OUTPUT_FORMAT_IMPORTED, name, grossPrice);
+            return ITEM_LINE_OUTPUT_FORMAT_IMPORTED.formatted(name, grossPrice);
         } else {
-            return String.format(ITEM_LINE_OUTPUT_FORMAT, name, grossPrice);
+            return ITEM_LINE_OUTPUT_FORMAT.formatted(name, grossPrice);
         }
     }
 

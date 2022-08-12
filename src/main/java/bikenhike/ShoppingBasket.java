@@ -25,7 +25,7 @@ public class ShoppingBasket {
         final var taxes = items.stream().map(Item::getTaxes).reduce(BigDecimal.ZERO, BigDecimal::add);
         final var total = items.stream().map(Item::getGrossPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
         final var invoice = items.stream().map(Item::generateItemReceiptLine).collect(Collectors.joining());
-        return invoice.concat(String.format(RECEIPT_DETAILS_FORMAT, taxes, total));
+        return invoice.concat(RECEIPT_DETAILS_FORMAT.formatted(taxes, total));
     }
 
 
